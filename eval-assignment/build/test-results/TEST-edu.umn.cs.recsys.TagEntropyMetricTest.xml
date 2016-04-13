@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="edu.umn.cs.recsys.TagEntropyMetricTest" tests="4" skipped="0" failures="0" errors="0" timestamp="2016-04-13T01:56:52" hostname="Stephen" time="7.28">
+  <properties/>
+  <testcase name="testSimpleUser" classname="edu.umn.cs.recsys.TagEntropyMetricTest" time="3.55"/>
+  <testcase name="testTwoUsers" classname="edu.umn.cs.recsys.TagEntropyMetricTest" time="1.309"/>
+  <testcase name="testLifecycle" classname="edu.umn.cs.recsys.TagEntropyMetricTest" time="1.155"/>
+  <testcase name="testTwoMovies" classname="edu.umn.cs.recsys.TagEntropyMetricTest" time="1.264"/>
+  <system-out><![CDATA[]]></system-out>
+  <system-err><![CDATA[]]></system-err>
+</testsuite>
