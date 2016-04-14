@@ -67,6 +67,7 @@ task itemBasedRecommend(type: JavaExec, group: 'run') {
     args 'global-recommend'
     args '-c', file('etc/item-item.groovy')
     args itemList
+    maxHeapSize '2g'
 }
 
 task predict(type: JavaExec, group: 'run') {

@@ -6,23 +6,20 @@ import it.unimi.dsi.fastutil.longs.Long2DoubleOpenHashMap;
 import it.unimi.dsi.fastutil.longs.LongSortedSet;
 import org.grouplens.lenskit.vectors.MutableSparseVector;
 import org.grouplens.lenskit.vectors.similarity.CosineVectorSimilarity;
-import org.lenskit.util.collections.LongUtils;
-import org.lenskit.inject.Transient;
 import org.lenskit.data.dao.ItemDAO;
 import org.lenskit.data.dao.ItemEventDAO;
+import org.lenskit.data.history.ItemEventCollection;
 import org.lenskit.data.ratings.Rating;
 import org.lenskit.data.ratings.Ratings;
-import org.lenskit.data.history.ItemEventCollection;
+import org.lenskit.inject.Transient;
+import org.lenskit.util.collections.LongUtils;
+import org.lenskit.util.io.ObjectStream;
 import org.lenskit.util.math.Vectors;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.lenskit.util.io.ObjectStream;
 
 import javax.inject.Inject;
 import javax.inject.Provider;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 /**
@@ -30,7 +27,7 @@ import java.util.Map;
  */
 public class SimpleItemItemModelBuilder implements Provider<SimpleItemItemModel> {
     private static final Logger logger = LoggerFactory.getLogger(SimpleItemItemModelBuilder.class);
-    ;
+
 
     private final ItemDAO itemDao;
     private final ItemEventDAO itemEventDAO;
@@ -86,10 +83,12 @@ public class SimpleItemItemModelBuilder implements Provider<SimpleItemItemModel>
         CosineVectorSimilarity cosineVectorSimilarity = new CosineVectorSimilarity();
         for(long i : items){
             MutableSparseVector vectori = MutableSparseVector.create(itemVectors.get(i));
-            for(Long j: items){
+            for(long j: items){
                 MutableSparseVector vectorj = MutableSparseVector.create(itemVectors.get(j));
-                Double sim = cosineVectorSimilarity.similarity(vectori, vectorj);
-                itemSimilarities.get(i).put(j, sim);
+                double sim = cosineVectorSimilarity.similarity(vectori, vectorj);
+                if(sim > 0){
+                    itemSimilarities.get(i).put(j, sim);
+                }
             }
         }
 

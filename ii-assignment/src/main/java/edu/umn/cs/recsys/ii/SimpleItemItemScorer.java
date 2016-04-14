@@ -2,7 +2,7 @@ package edu.umn.cs.recsys.ii;
 
 import it.unimi.dsi.fastutil.longs.Long2DoubleMap;
 import it.unimi.dsi.fastutil.longs.Long2DoubleOpenHashMap;
-import org.grouplens.lenskit.util.ScoredItemAccumulator;
+import org.grouplens.lenskit.scored.ScoredId;
 import org.grouplens.lenskit.util.TopNScoredItemAccumulator;
 import org.lenskit.api.Result;
 import org.lenskit.api.ResultMap;
@@ -54,8 +54,34 @@ public class SimpleItemItemScorer extends AbstractItemScorer {
         }
 
         List<Result> results = new ArrayList<>();
+
+        Long2DoubleMap scores = new Long2DoubleOpenHashMap();
+
         for (Long item: items ) {
             // TODO Compute the user's score for each item, add it to results
+            Long2DoubleMap allNeighbors = model.getNeighbors(item);
+
+            // Score this item and save the score into scores.
+            // HINT: You might want to use the TopNScoredItemAccumulator class.
+            TopNScoredItemAccumulator topNScoredItemAccumulator = new TopNScoredItemAccumulator(neighborhoodSize);
+            for (Map.Entry<Long, Double> e : allNeighbors.entrySet()) {
+                if (ratings.containsKey(e.getKey())) {
+                    topNScoredItemAccumulator.put(e.getKey(), e.getValue());
+                }
+            }
+            Double score = 0.;
+            double denom = 0;
+            for (ScoredId neighbor : topNScoredItemAccumulator.finish()) {
+                score += ratings.get(neighbor.getId()) * neighbor.getScore();
+                denom += Math.abs(neighbor.getScore());
+            }
+            score /= denom;
+            score += itemMeans.get(item);
+            scores.put(item, score);
+        }
+
+        for (Map.Entry<Long, Double> entry : scores.entrySet()) {
+            results.add(Results.create(entry.getKey(), entry.getValue()));
         }
 
         return Results.newResultMap(results);

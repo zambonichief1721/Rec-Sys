@@ -3,8 +3,6 @@ package edu.umn.cs.recsys.ii;
 import it.unimi.dsi.fastutil.longs.Long2DoubleOpenHashMap;
 import org.lenskit.api.Result;
 import org.lenskit.api.ResultMap;
-import org.grouplens.lenskit.scored.ScoredId;
-import org.grouplens.lenskit.vectors.MutableSparseVector;
 import org.lenskit.basic.AbstractItemBasedItemScorer;
 import org.lenskit.results.Results;
 
